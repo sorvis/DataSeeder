@@ -1,0 +1,9 @@
+﻿{
+	"IdentityPrimaryKey": [
+        {
+            "Id": 101,
+            "FirstName": "Jan",
+            "LastName": "Kowalski"
+        }
+	]
+}
