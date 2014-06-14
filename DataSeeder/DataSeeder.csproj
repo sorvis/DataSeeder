@@ -41,12 +41,16 @@
     <Reference Include="NLog">
       <HintPath>..\packages\NLog.3.0.0.0\lib\net45\NLog.dll</HintPath>
     </Reference>
+    <Reference Include="PowerArgs">
+      <HintPath>..\packages\PowerArgs.2.0.6.1\lib\net40\PowerArgs.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Args.cs" />
     <Compile Include="ColumnInfo.cs" />
     <Compile Include="DictionaryExtensions.cs" />
     <Compile Include="JsonExtensions.cs" />
@@ -55,6 +59,7 @@
     <Compile Include="Commands\SeedCommand.cs" />
     <Compile Include="Sql\SqlHelper.cs" />
     <Compile Include="Sql\TableOperations.cs" />
+    <Compile Include="StringExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

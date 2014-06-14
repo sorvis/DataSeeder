@@ -13,15 +13,15 @@ namespace DataSeeder.Commands
         private DbConnection connection;
         private SqlHelper sql;
 
-        public void Execute(string provider, string file, string connectionString)
+        public void Execute(SeedArgs args)
         {
-            var providerFactory = DbProviderFactories.GetFactory(provider);
+            var providerFactory = DbProviderFactories.GetFactory(args.Provider);
 
-            var inputData = JObject.Parse(File.ReadAllText(file));
+            var inputData = JObject.Parse(File.ReadAllText(args.InputFile));
 
             using (this.connection = providerFactory.CreateConnection())
             {
-                this.connection.ConnectionString = connectionString;
+                this.connection.ConnectionString = args.ConnectionString;
                 this.connection.Open();
 
                 this.sql = new SqlHelper(this.connection);

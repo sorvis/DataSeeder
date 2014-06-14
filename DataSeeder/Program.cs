@@ -10,20 +10,39 @@ using Dapper;
 using DataSeeder.Commands;
 using Newtonsoft.Json.Linq;
 using NLog;
+using PowerArgs;
 
 namespace DataSeeder
 {
     class Program
     {
-        static void Main(string[] args)
-        {
-            var connectionString = @"Data Source=.\SQLEXPRESS;Initial catalog=seeder;trusted_connection=yes";
-            var provider = "System.Data.SqlClient";
-            var file = @"..\..\sample1.json";
+        static void Main(string[] cmdArgs)
+        {            
+            try
+            {                
+                var args = PowerArgs.Args.ParseAction<Args>(cmdArgs);
 
-            var command = new SeedCommand();
+                if (args.Args.Help)
+                {
+                    PowerArgs.ArgUsage.GetStyledUsage<Args>().Write();
+                }
+                else
+                {
 
-            command.Execute(provider, file, connectionString);
+                    var commandTypeName = string.Format("{0}.Commands.{1}Command", typeof (Program).Namespace, args.Args.Action.ToCamelCase());
+
+                    var command = Activator.CreateInstance(Type.GetType(commandTypeName));
+
+                    ((dynamic) command).Execute((dynamic) args.ActionArgs);                    
+                }
+            }
+            catch (ArgException e)
+            {
+                Console.WriteLine(e.Message);
+                Console.WriteLine();
+                
+                PowerArgs.ArgUsage.GetStyledUsage<Args>().Write();
+            }
         }
     }
 }
