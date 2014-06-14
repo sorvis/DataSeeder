@@ -9,6 +9,11 @@
             "Id": 102,
             "FirstName": "Jan2",
             "LastName": "Kowalski2"
+        },
+        {
+            "Id": 103,
+            "FirstName":  "Jan3",
+            "LastName": null
         }
 	]
 }

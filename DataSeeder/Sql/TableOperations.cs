@@ -60,5 +60,21 @@ namespace DataSeeder.Sql
 
             this.connection.Query<int>(update, record.AsDynamicParameters());
         }
+
+        public IEnumerable<IDictionary<string, object>> GetRecords(string condition, string[] columns)
+        {
+            var columnExpression = columns.Length == 0 ? "*" : string.Join(", ", columns);
+
+            var sql = "SELECT " + columnExpression + " FROM " + this.TableName;
+
+            if (!string.IsNullOrWhiteSpace(condition))
+            {
+                sql += " WHERE " + condition;
+            }
+
+            var records = this.connection.Query(sql);
+
+            return records.Select(x => (IDictionary<string, object>) x);
+        }
     }
 }

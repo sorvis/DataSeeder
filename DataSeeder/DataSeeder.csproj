@@ -52,6 +52,7 @@
   <ItemGroup>
     <Compile Include="Args.cs" />
     <Compile Include="ColumnInfo.cs" />
+    <Compile Include="Commands\DumpCommand.cs" />
     <Compile Include="DictionaryExtensions.cs" />
     <Compile Include="JsonExtensions.cs" />
     <Compile Include="Program.cs" />
