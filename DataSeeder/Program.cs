@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Dapper;
+using DataSeeder.Commands;
 using Newtonsoft.Json.Linq;
 using NLog;
 

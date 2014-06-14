@@ -1,12 +1,10 @@
-using System;
 using System.Data.Common;
 using System.IO;
-using System.Linq;
-using Dapper;
+using DataSeeder.Sql;
 using Newtonsoft.Json.Linq;
 using NLog;
 
-namespace DataSeeder
+namespace DataSeeder.Commands
 {
     internal class SeedCommand
     {
@@ -21,12 +19,12 @@ namespace DataSeeder
 
             var inputData = JObject.Parse(File.ReadAllText(file));
 
-            using (connection = providerFactory.CreateConnection())
+            using (this.connection = providerFactory.CreateConnection())
             {
-                connection.ConnectionString = connectionString;
-                connection.Open();
+                this.connection.ConnectionString = connectionString;
+                this.connection.Open();
 
-                this.sql = new SqlHelper(connection);
+                this.sql = new SqlHelper(this.connection);
 
                 foreach (var table in inputData.Properties())
                 {
@@ -39,9 +37,7 @@ namespace DataSeeder
         {
             Log.Info("Seeding table {0}", table.Name);
 
-            var primaryKeyColumns = this.sql.GetPrimaryKeyColumns(table.Name);
-
-            var primaryKeyLocator = this.sql.GetLocatorByPrimaryKey(primaryKeyColumns);
+            var tableOps = this.sql.GetTableOperations(table.Name);          
 
             var records = table.Value.Value<JArray>();
 
@@ -49,19 +45,19 @@ namespace DataSeeder
             {
                 var parameters = record.AsDictionary();
 
-                var count = this.sql.CountOfRecordsWithPrimaryKey(table.Name, primaryKeyLocator, record.AsDictionary());
+                var count = tableOps.CountOfRecordsWithPrimaryKey(parameters);
 
                 if (count == 0)
                 {
                     Log.Debug("Inserting new record");
 
-                    this.sql.InsertRecord(table.Name, parameters);
+                    tableOps.InsertRecord(parameters);
                 }
                 else
                 {
                     Log.Debug("Updating existing record");
 
-                    this.sql.UpdateRecord(primaryKeyColumns, primaryKeyLocator, parameters, table.Name);
+                    tableOps.UpdateRecord(parameters);
                 }
             }
         }
