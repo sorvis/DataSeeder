@@ -46,7 +46,11 @@ namespace DataSeeder
 
         [ArgRequired]
         [ArgShortcut("-f")]
-        public string OutputFile { get; set; }       
+        public string OutputFile { get; set; }
+
+        [ArgRequired]
+        [DefaultValue(true)]
+        public bool Append { get; set; }
     }
 
     public class ConnectionRelatedActionArgs

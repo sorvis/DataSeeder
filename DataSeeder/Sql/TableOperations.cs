@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data.Common;
 using System.Linq;
 using Dapper;
+using Newtonsoft.Json.Linq;
 
 namespace DataSeeder.Sql
 {
@@ -37,7 +38,7 @@ namespace DataSeeder.Sql
         {
             var parameters = record.AsDynamicParameters();
 
-            var checkIfExists = String.Format("SELECT COUNT(1) FROM {0} WHERE {1}", this.TableName, this.PrimaryKeyLocator);
+            var checkIfExists = string.Format("SELECT COUNT(1) FROM {0} WHERE {1}", this.TableName, this.PrimaryKeyLocator);
 
             return this.connection.Query<int>(checkIfExists, parameters).Single();
         }
@@ -75,6 +76,11 @@ namespace DataSeeder.Sql
             var records = this.connection.Query(sql);
 
             return records.Select(x => (IDictionary<string, object>) x);
+        }
+
+        public bool IsPrimaryKeyEqual(IDictionary<string, string> a, IDictionary<string, string> b)
+        {
+            return this.PrimaryKeyColumns.All(x => object.Equals(a[x], b[x]));
         }
     }
 }
