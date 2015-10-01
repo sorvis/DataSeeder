@@ -11,11 +11,11 @@ Insert sample data to your SQL database with ease!
 ##Actions:
 ###Seed 
 
-   | OPTION                 | TYPE    | POSITION | DESCRIPTION |
-   | ---------------------- | ------- | -------- | ----------- |
-   | -Provider (-p)         | string* | 1        |             |
-   | -ConnectionString (-c) | string* | 2        |             |
-   | -InputFile (-f)        | string* | 3        |             |
+| OPTION                 | TYPE    | POSITION | DESCRIPTION |
+| ---------------------- | ------- | -------- | ----------- |
+| -Provider (-p)         | string* | 1        |             |
+| -ConnectionString (-c) | string* | 2        |             |
+| -InputFile (-f)        | string* | 3        |             |
 
 ###Dump 
 
@@ -27,3 +27,8 @@ Insert sample data to your SQL database with ease!
    * -Columns (-s)            string[]   NA
    * -OutputFile (-f)         string*    NA
    * -Append (-A)             switch*    NA          [default=True]
+
+#Supported providers
+
+#Unsupported providers
+* Oracle.ManagedDataAccess.Client (throws error because of bad SQL query)
