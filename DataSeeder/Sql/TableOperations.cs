@@ -31,7 +31,9 @@ namespace DataSeeder.Sql
 
         public string GetLocatorByPrimaryKey()
         {
-            return string.Join(" and ", this.PrimaryKeyColumns.Select(x => string.Format((string) "{0} = @{0}", (object) x)));
+            //return string.Join(" and ", this.PrimaryKeyColumns.Select(x => string.Format((string) "{0} = @{0}", (object) x)));
+            // Oracle
+            return string.Join(" and ", this.PrimaryKeyColumns.Select(x => string.Format((string) "{0} = :{0}", (object) x)));
         }
 
         public int CountOfRecordsWithPrimaryKey(IDictionary<string, string> record)
@@ -46,7 +48,9 @@ namespace DataSeeder.Sql
         public void InsertRecord( IDictionary<string, string> record)
         {
             var columns = string.Join(", ", record.Keys);
-            var values = string.Join(", ", record.Keys.Select(x => "@" + x));
+            //var values = string.Join(", ", record.Keys.Select(x => "@" + x));
+            // oracle
+            var values = string.Join(", ", record.Keys.Select(x => ":" + x));
 
             var insert = string.Format("BEGIN TRY SET IDENTITY_INSERT {0} ON END TRY BEGIN CATCH END CATCH; INSERT INTO {0}({1}) VALUES({2})", this.TableName, columns, values);
 
@@ -55,7 +59,9 @@ namespace DataSeeder.Sql
 
         public void UpdateRecord(IDictionary<string, string> record)
         {
-            var set = string.Join(", ", record.Keys.Except(this.PrimaryKeyColumns).Select(x => x + " = @" + x));
+            //var set = string.Join(", ", record.Keys.Except(this.PrimaryKeyColumns).Select(x => x + " = @" + x));
+            // oracle
+            var set = string.Join(", ", record.Keys.Except(this.PrimaryKeyColumns).Select(x => x + " = :" + x));
 
             var update = string.Format("UPDATE {0} SET {1} WHERE {2}", this.TableName, set, this.PrimaryKeyLocator);
 
