@@ -52,7 +52,10 @@ namespace DataSeeder.Sql
             // oracle
             var values = string.Join(", ", record.Keys.Select(x => ":" + x));
 
-            var insert = string.Format("BEGIN TRY SET IDENTITY_INSERT {0} ON END TRY BEGIN CATCH END CATCH; INSERT INTO {0}({1}) VALUES({2})", this.TableName, columns, values);
+            //var insert = string.Format("BEGIN TRY SET IDENTITY_INSERT {0} ON END TRY BEGIN CATCH END CATCH; INSERT INTO {0}({1}) VALUES({2})", this.TableName, columns, values);
+
+            // oracle does not need to allow identity insert
+            var insert = string.Format("INSERT INTO {0}({1}) VALUES({2})", this.TableName, columns, values);
 
             this.connection.Query<int>(insert, record.AsDynamicParameters());
         }

@@ -1,5 +1,9 @@
+using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Data.Common;
 using System.IO;
+using System.Linq;
 using DataSeeder.Sql;
 using Newtonsoft.Json.Linq;
 using NLog;
@@ -43,9 +47,11 @@ namespace DataSeeder.Commands
 
             foreach (JObject record in records)
             {
+                formatRecordsForOracleDateTime(record);
                 var parameters = record.AsDictionary();
 
                 var count = tableOps.CountOfRecordsWithPrimaryKey(parameters);
+
 
                 if (count == 0)
                 {
@@ -59,6 +65,25 @@ namespace DataSeeder.Commands
 
                     tableOps.UpdateRecord(parameters);
                 }
+            }
+        }
+
+        private void formatRecordsForOracleDateTime(JObject record)
+        {
+            List<KeyValuePair<String,JToken>> newItems = new List<KeyValuePair<string, JToken>>();
+            foreach (var column in record)
+            {
+                DateTime dateTime;
+                if (DateTime.TryParse(column.Value.ToString(), out dateTime))
+                {
+                    var oracleFormatted = dateTime.ToString("dd-MMM-yy hh.mm.ss.fffffff tt");
+                    newItems.Add(new KeyValuePair<string, JToken>(column.Key, oracleFormatted));
+                    //column.Value = oracleFormatted;
+                }
+            }
+            foreach (var newColumn in newItems)
+            {
+                record[newColumn.Key] = newColumn.Value;
             }
         }
     }
