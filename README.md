@@ -19,16 +19,18 @@ Insert sample data to your SQL database with ease!
 
 ###Dump 
 
-   **OPTION                   TYPE       POSITION   DESCRIPTION**
-   * -Provider (-p)           string*    1
-   * -ConnectionString (-c)   string*    2
-   * -TableName (-T)          string*    3
-   * -Condition (-w)          string     NA
-   * -Columns (-s)            string[]   NA
-   * -OutputFile (-f)         string*    NA
-   * -Append (-A)             switch*    NA          [default=True]
+| OPTION                   | TYPE       | POSITION | DESCRIPTION    |
+| ------------------------ | ---------- | -------- | -------------- |
+| -Provider (-p)           | string*    | 1        |                |
+| -ConnectionString (-c)   | string*    | 2        |                |
+| -TableName (-T)          | string*    | 3        |                |
+| -Condition (-w)          | string     | NA       |                |
+| -Columns (-s)            | string[]   | NA       |                |
+| -OutputFile (-f)         | string*    | NA       |                |
+| -Append (-A)             | switch*    | NA       | [default=True] |
 
 #Supported providers
+* Oracle.ManagedDataAccess.Client (throws error because of bad SQL query)
 
 #Unsupported providers
-* Oracle.ManagedDataAccess.Client (throws error because of bad SQL query)
+
